@@ -1,0 +1,2214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stick - Episode 3 Interactive English Workbook</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0A2463;
+            --accent-color: #7B68EE;
+            --secondary-color: #605F5E;
+            --white-color: #FFFFFF;
+            --light-gray: #F5F7FA;
+            --success-color: #4CAF50;
+            --error-color: #F44336;
+            --warning-color: #FFC107;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--secondary-color);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Libre Baskerville', serif;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: var(--white-color);
+            padding: 2rem 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            color: var(--white-color);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+        .progress-container {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            margin: 1rem auto;
+            max-width: 800px;
+            height: 20px;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--success-color);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+            border-bottom: 2px solid var(--light-gray);
+        }
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            background-color: var(--white-color);
+            border: 1px solid var(--light-gray);
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        .tab:hover {
+            background-color: var(--light-gray);
+        }
+        .tab.active {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            border-color: var(--primary-color);
+        }
+        .tab-content {
+            display: none;
+            padding: 2rem;
+            background-color: var(--white-color);
+            border-radius: 0 10px 10px 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .exercise {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-color);
+        }
+        .exercise-title {
+            font-family: 'Libre Baskerville', serif;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .exercise-title i {
+            margin-right: 0.5rem;
+            color: var(--accent-color);
+        }
+        .instruction {
+            font-style: italic;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+        .question {
+            margin-bottom: 1.5rem;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .option {
+            padding: 0.75rem;
+            background-color: var(--white-color);
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option:hover {
+            background-color: rgba(123, 104, 238, 0.1);
+            border-color: var(--accent-color);
+        }
+        .option.selected {
+            background-color: rgba(123, 104, 238, 0.2);
+            border-color: var(--accent-color);
+        }
+        .option.correct {
+            background-color: rgba(76, 175, 80, 0.2);
+            border-color: var(--success-color);
+        }
+        .option.incorrect {
+            background-color: rgba(244, 67, 54, 0.2);
+            border-color: var(--error-color);
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent-color);
+            color: var(--white-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn i {
+            margin-right: 0.5rem;
+        }
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        .btn-success {
+            background-color: var(--success-color);
+        }
+        .btn-danger {
+            background-color: var(--error-color);
+        }
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            display: none;
+        }
+        .feedback.success {
+            background-color: rgba(76, 175, 80, 0.1);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+        }
+        .feedback.error {
+            background-color: rgba(244, 67, 54, 0.1);
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
+        }
+        .text-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Nunito Sans', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        .text-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .word-count {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+            margin-top: 0.25rem;
+        }
+        .matching-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .matching-column {
+            flex: 1;
+            min-width: 200px;
+        }
+        .matching-item {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background-color: var(--white-color);
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: move;
+            transition: all 0.2s ease;
+            -webkit-user-drag: element;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .matching-item:hover {
+            background-color: rgba(123, 104, 238, 0.1);
+            border-color: var(--accent-color);
+        }
+        .matching-item.dragging {
+            opacity: 0.5 !important;
+            z-index: 1000 !important;
+        }
+        .drop-zone {
+            min-height: 60px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background-color: rgba(123, 104, 238, 0.05);
+            border: 2px dashed var(--accent-color);
+            border-radius: 5px;
+            transition: all 0.2s ease;
+            -webkit-user-drag: element;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .drop-zone.drag-over {
+            background-color: rgba(123, 104, 238, 0.2);
+        }
+        .drop-zone.filled {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-color: var(--success-color);
+            border-style: solid;
+        }
+        .flashcard {
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            margin: 1rem auto;
+            perspective: 1000px;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .flashcard-front {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: var(--white-color);
+        }
+        .flashcard-back {
+            background-color: var(--white-color);
+            color: var(--primary-color);
+            border: 1px solid var(--light-gray);
+            transform: rotateY(180deg);
+        }
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .memory-card {
+            height: 100px;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transform: scale(1);
+            transition: transform 0.5s;
+        }
+        .memory-card.flip {
+            transform: rotateY(180deg);
+        }
+        .memory-card:active {
+            transform: scale(0.95);
+            transition: transform 0.2s;
+        }
+        .memory-front, .memory-back {
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            position: absolute;
+            border-radius: 5px;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .memory-front {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: var(--white-color);
+        }
+        .memory-back {
+            background-color: var(--white-color);
+            color: var(--primary-color);
+            border: 1px solid var(--light-gray);
+            transform: rotateY(180deg);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        .memory-card.matched .memory-back {
+            background-color: rgba(76, 175, 80, 0.2);
+            border-color: var(--success-color);
+        }
+        .character-card {
+            background-color: var(--white-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .character-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .character-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white-color);
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        .character-info h3 {
+            margin-bottom: 0.25rem;
+        }
+        .character-role {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        .character-traits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .trait {
+            padding: 0.25rem 0.75rem;
+            background-color: var(--light-gray);
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+            padding-left: 2rem;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            background-color: var(--white-color);
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            cursor: move;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 1rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            border: 3px solid var(--white-color);
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+        .timeline-item.dragging {
+            opacity: 0.5;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 5px;
+            color: var(--white-color);
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        .notification.show {
+            transform: translateX(0);
+        }
+        .notification.success {
+            background-color: var(--success-color);
+        }
+        .notification.error {
+            background-color: var(--error-color);
+        }
+        .notification.warning {
+            background-color: var(--warning-color);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background-color: var(--white-color);
+            border-radius: 10px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalFadeIn 0.3s ease;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--secondary-color);
+        }
+        .modal-close:hover {
+            color: var(--primary-color);
+        }
+        .quiz-question {
+            margin-bottom: 1.5rem;
+        }
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .example-answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(123, 104, 238, 0.1);
+            border-left: 4px solid var(--accent-color);
+            border-radius: 5px;
+            display: none;
+        }
+        .example-answer.show {
+            display: block;
+        }
+        .toggle-example {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        .toggle-example i {
+            margin-left: 0.25rem;
+        }
+        footer {
+            margin-top: 3rem;
+            padding: 2rem 0;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            border-radius: 10px 10px 0 0;
+        }
+        .teacher-instructions {
+            background-color: rgba(123, 104, 238, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 0 10px 10px 0;
+        }
+        .teacher-instructions h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            .tabs {
+                justify-content: center;
+            }
+            .tab {
+                flex: 1 1 calc(50% - 5px);
+                text-align: center;
+            }
+            .matching-container {
+                flex-direction: column;
+            }
+            .timeline {
+                padding-left: 1rem;
+            }
+            .timeline-item::before {
+                left: -1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Stick - Episode 3 Interactive English Workbook</h1>
+            <p class="subtitle">Enhance your English skills with engaging activities based on the episode</p>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar">0%</div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="teacher-instructions">
+            <h3><i class="fas fa-chalkboard-teacher"></i> Teacher Instructions</h3>
+            <p>This interactive workbook is designed for B1+ level English learners. It includes various activities to practice vocabulary, grammar, speaking, critical thinking, and cultural understanding based on "Stick" Episode 3. Students can work through the sections independently, and their progress will be tracked automatically. The workbook includes self-checking exercises with immediate feedback, and open-ended questions with AI-like checking based on keywords. Teachers can review students' work by having them submit their answers via email.</p>
+        </div>
+        <div class="tabs">
+            <div class="tab active" data-tab="vocabulary">
+                <i class="fas fa-book"></i> Vocabulary
+            </div>
+            <div class="tab" data-tab="grammar">
+                <i class="fas fa-spell-check"></i> Grammar
+            </div>
+            <div class="tab" data-tab="speaking">
+                <i class="fas fa-comments"></i> Speaking
+            </div>
+            <div class="tab" data-tab="critical-thinking">
+                <i class="fas fa-brain"></i> Critical Thinking
+            </div>
+            <div class="tab" data-tab="cultural-context">
+                <i class="fas fa-globe-americas"></i> Cultural Context
+            </div>
+            <div class="tab" data-tab="interactive">
+                <i class="fas fa-gamepad"></i> Interactive Activities
+            </div>
+        </div>
+        <div class="tab-content active" id="vocabulary">
+            <h2><i class="fas fa-book"></i> Vocabulary</h2>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-tasks"></i> Idioms and Expressions</h3>
+                <p class="instruction">Match the idioms from the episode with their meanings.</p>
+                <div class="matching-container">
+                    <div class="matching-column">
+                        <div class="matching-item" draggable="true" data-id="1">get in a slump</div>
+                        <div class="matching-item" draggable="true" data-id="2">snap out of it</div>
+                        <div class="matching-item" draggable="true" data-id="3">light a fire under someone</div>
+                        <div class="matching-item" draggable="true" data-id="4">pull a Gary Wheeler</div>
+                        <div class="matching-item" draggable="true" data-id="5">extreme ownership</div>
+                    </div>
+                    <div class="matching-column">
+                        <div class="drop-zone" data-id="1">To experience a period of poor performance or bad luck</div>
+                        <div class="drop-zone" data-id="2">To quickly recover from a bad mood or situation</div>
+                        <div class="drop-zone" data-id="3">To motivate someone to take action or work harder</div>
+                        <div class="drop-zone" data-id="4">To act like a tyrant, similar to Santi's father</div>
+                        <div class="drop-zone" data-id="5">Taking full responsibility for one's actions and decisions</div>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" id="checkMatching">Check Answers</button>
+                <div class="feedback" id="matchingFeedback"></div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-pencil-alt"></i> Fill in the Blanks</h3>
+                <p class="instruction">Complete the sentences with the correct idioms from the episode.</p>
+                <div class="question">
+                    <p>1. When things go sideways, you need to _____ quickly.</p>
+                    <input type="text" class="text-input" id="blank1" placeholder="Enter the idiom">
+                </div>
+                <div class="question">
+                    <p>2. Pryce tried to _____ Santi by yelling at him during the game.</p>
+                    <input type="text" class="text-input" id="blank2" placeholder="Enter the idiom">
+                </div>
+                <div class="question">
+                    <p>3. Santi was _____ after the first few holes of the tournament.</p>
+                    <input type="text" class="text-input" id="blank3" placeholder="Enter the idiom">
+                </div>
+                <div class="question">
+                    <p>4. Mitts accused Pryce of _____ when he criticized Santi's performance.</p>
+                    <input type="text" class="text-input" id="blank4" placeholder="Enter the idiom">
+                </div>
+                <div class="question">
+                    <p>5. Zero encouraged Santi to take _____ of his game and not let Pryce affect him.</p>
+                    <input type="text" class="text-input" id="blank5" placeholder="Enter the idiom">
+                </div>
+                <button class="btn btn-secondary" id="checkBlanks">Check Answers</button>
+                <div class="feedback" id="blanksFeedback"></div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-lightbulb"></i> Create Your Own Sentences</h3>
+                <p class="instruction">Use the following idioms from the episode in your own sentences.</p>
+                <div class="question">
+                    <p>1. "get in your head"</p>
+                    <textarea class="text-input" id="sentence1" placeholder="Write your sentence here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="sentence1" data-keywords="head,overthink,worry,stuck,anxious">Check with AI</button>
+                    <div class="feedback" id="sentence1Feedback"></div>
+                </div>
+                <div class="question">
+                    <p>2. "put your money where your mouth is"</p>
+                    <textarea class="text-input" id="sentence2" placeholder="Write your sentence here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="sentence2" data-keywords="money,bet,action,prove,back up">Check with AI</button>
+                    <div class="feedback" id="sentence2Feedback"></div>
+                </div>
+                <div class="question">
+                    <p>3. "hands down"</p>
+                    <textarea class="text-input" id="sentence3" placeholder="Write your sentence here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="sentence3" data-keywords="best,without,doubt,obviously,easily">Check with AI</button>
+                    <div class="feedback" id="sentence3Feedback"></div>
+                </div>
+            </div>
+            
+            <div class="flashcard" id="vocabFlashcard">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <h3>RV (Recreational Vehicle)</h3>
+                    </div>
+                    <div class="flashcard-back">
+                        <p>A motor vehicle or trailer equipped with some of the amenities of home. In the episode, the characters travel in an RV instead of staying at hotels.</p>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <button class="btn btn-secondary" id="prevFlashcard"><i class="fas fa-arrow-left"></i> Previous</button>
+                <button class="btn btn-secondary" id="nextFlashcard">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="grammar">
+            <h2><i class="fas fa-spell-check"></i> Grammar</h2>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-exchange-alt"></i> Conditionals</h3>
+                <p class="instruction">Choose the correct conditional form (1st, 2nd, or 3rd) to complete the sentences.</p>
+                <div class="question">
+                    <p>1. If Santi _____ (play) better, he would win the tournament.</p>
+                    <div class="options">
+                        <div class="option" data-answer="wrong">plays</div>
+                        <div class="option" data-answer="correct">played</div>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>2. If Elena _____ (have) enough money, she will stay at the DoubleTree.</p>
+                    <div class="options">
+                        <div class="option" data-answer="correct">has</div>
+                        <div class="option" data-answer="wrong">had</div>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>3. If Mitts _____ (be) stuck under the bed longer, he would have called for help.</p>
+                    <div class="options">
+                        <div class="option" data-answer="wrong">was</div>
+                        <div class="option" data-answer="correct">had been</div>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>4. If Pryce _____ (not/yell) at Santi, he would have performed better.</p>
+                    <div class="options">
+                        <div class="option" data-answer="wrong">doesn't yell</div>
+                        <div class="option" data-answer="correct">hadn't yelled</div>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>5. If the dogs _____ (not/mess) up the storage box, Mitts wouldn't be angry.</p>
+                    <div class="options">
+                        <div class="option" data-answer="wrong">don't mess</div>
+                        <div class="option" data-answer="correct">hadn't messed</div>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" id="checkConditionals">Check Answers</button>
+                <div class="feedback" id="conditionalsFeedback"></div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-quote-right"></i> Reported Speech</h3>
+                <p class="instruction">Change the following direct speech sentences from the episode into reported speech.</p>
+                <div class="question">
+                    <p>1. Pryce said, "I will take the bunks and you guys take the big bed."</p>
+                    <textarea class="text-input" id="reported1" placeholder="Write the reported speech here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="reported1" data-keywords="said,would,take,bunks,they,big,bed">Check with AI</button>
+                    <div class="feedback" id="reported1Feedback"></div>
+                </div>
+                <div class="question">
+                    <p>2. Elena asked, "Why would you spend your money on a hotel when we have beds here?"</p>
+                    <textarea class="text-input" id="reported2" placeholder="Write the reported speech here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="reported2" data-keywords="asked,why,would,spend,money,hotel,had,beds,there">Check with AI</button>
+                    <div class="feedback" id="reported2Feedback"></div>
+                </div>
+                <div class="question">
+                    <p>3. Mitts said, "I'm not sleeping or showering in a crappy RV with two strange men."</p>
+                    <textarea class="text-input" id="reported3" placeholder="Write the reported speech here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="reported3" data-keywords="said,wasn't,sleeping,showering,crappy,RV,with,strange,men">Check with AI</button>
+                    <div class="feedback" id="reported3Feedback"></div>
+                </div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-cogs"></i> Phrasal Verbs</h3>
+                <p class="instruction">Complete the sentences with the correct phrasal verbs from the box.</p>
+                <div style="background-color: var(--light-gray); padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+                    <p><strong>Phrasal Verbs:</strong> come across, go sideways, snap out of, light a fire, pull out</p>
+                </div>
+                <div class="question">
+                    <p>1. When things _____, you need to stay calm and focused.</p>
+                    <input type="text" class="text-input" id="phrasal1" placeholder="Enter the phrasal verb">
+                </div>
+                <div class="question">
+                    <p>2. Santi needs to _____ of his slump and concentrate on the game.</p>
+                    <input type="text" class="text-input" id="phrasal2" placeholder="Enter the phrasal verb">
+                </div>
+                <div class="question">
+                    <p>3. Pryce tried to _____ under Santi by criticizing his performance.</p>
+                    <input type="text" class="text-input" id="phrasal3" placeholder="Enter the phrasal verb">
+                </div>
+                <div class="question">
+                    <p>4. They need to _____ of this difficult situation together.</p>
+                    <input type="text" class="text-input" id="phrasal4" placeholder="Enter the phrasal verb">
+                </div>
+                <div class="question">
+                    <p>5. Zero _____ some rude customers at the golf course bar.</p>
+                    <input type="text" class="text-input" id="phrasal5" placeholder="Enter the phrasal verb">
+                </div>
+                <button class="btn btn-secondary" id="checkPhrasal">Check Answers</button>
+                <div class="feedback" id="phrasalFeedback"></div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="speaking">
+            <h2><i class="fas fa-comments"></i> Speaking</h2>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-theater-masks"></i> Role Play: RV Argument</h3>
+                <p class="instruction">Prepare and act out a conversation between Elena and Pryce where they argue about staying in the RV vs. a hotel. Use expressions and vocabulary from the episode.</p>
+                <div class="question">
+                    <h4>Elena:</h4>
+                    <textarea class="text-input" id="elenaRole" placeholder="Write Elena's lines here..."></textarea>
+                    <div class="word-count">0 words</div>
+                </div>
+                <div class="question">
+                    <h4>Pryce:</h4>
+                    <textarea class="text-input" id="pryceRole" placeholder="Write Pryce's lines here..."></textarea>
+                    <div class="word-count">0 words</div>
+                </div>
+                <button class="btn btn-secondary check-ai" data-target="elenaRole,pryceRole" data-keywords="hotel,DoubleTree,bed,money,expenses,deal,RV,camaraderie">Check with AI</button>
+                <div class="feedback" id="rolePlayFeedback"></div>
+                <div class="example-answer" id="rolePlayExample">
+                    <h4>Example Answer:</h4>
+                    <p><strong>Elena:</strong> I'm not sleeping in this RV. I want to go to the DoubleTree.</p>
+                    <p><strong>Pryce:</strong> Why would you spend money on a hotel when we have perfectly good beds here?</p>
+                    <p><strong>Elena:</strong> This isn't my money we're spending. It's yours. And our deal was for travel expenses like snacks and magazines, not for me to sleep in a cramped RV with two strange men.</p>
+                    <p><strong>Pryce:</strong> This isn't a cramped RV! It was voted motor coach of the year in 2006. Besides, it'll be good for camaraderie.</p>
+                    <p><strong>Elena:</strong> I don't care about camaraderie. I want a proper bed and a private bathroom. There's a DoubleTree just a few miles back.</p>
+                </div>
+                <div class="toggle-example" data-target="rolePlayExample">
+                    Show Example <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-user-circle"></i> Character Description</h3>
+                <p class="instruction">Describe the character of Zero using at least 5 adjectives and supporting details from the episode.</p>
+                <div class="question">
+                    <textarea class="text-input" id="zeroDesc" placeholder="Describe Zero's character here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="zeroDesc" data-keywords="confident,brave,principled,assertive,independent,strong-willed">Check with AI</button>
+                    <div class="feedback" id="zeroDescFeedback"></div>
+                </div>
+                <div class="example-answer" id="zeroDescExample">
+                    <h4>Example Answer:</h4>
+                    <p>Zero is a confident and brave character who stands up for herself even when it costs her job. When the rude golfers make inappropriate comments, she doesn't hesitate to respond assertively. She's principled, refusing to tolerate disrespectful behavior even from customers. Zero is also independent and strong-willed, choosing to quit her job rather than compromise her values. Her decision to stand up to the manager shows her courage and determination to be treated with respect.</p>
+                </div>
+                <div class="toggle-example" data-target="zeroDescExample">
+                    Show Example <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-comments"></i> Discussion Questions</h3>
+                <p class="instruction">Answer the following discussion questions about the episode. Use complete sentences and provide examples from the episode when possible.</p>
+                <div class="question">
+                    <p>1. How does pressure affect Santi's performance in the tournament? Provide examples from the episode.</p>
+                    <textarea class="text-input" id="discuss1" placeholder="Write your answer here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="discuss1" data-keywords="pressure,affect,performance,Santi,nervous,mistakes,front nine,back nine,confidence">Check with AI</button>
+                    <div class="feedback" id="discuss1Feedback"></div>
+                </div>
+                <div class="question">
+                    <p>2. Do you think Pryce was right to bet on Santi's game? Why or why not?</p>
+                    <textarea class="text-input" id="discuss2" placeholder="Write your answer here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="discuss2" data-keywords="bet,Santi,right,wrong,ethical,money,pressure,trust,relationship,coach">Check with AI</button>
+                    <div class="feedback" id="discuss2Feedback"></div>
+                </div>
+                <div class="question">
+                    <p>3. How would you react if you were in Zero's situation with the rude customers?</p>
+                    <textarea class="text-input" id="discuss3" placeholder="Write your answer here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="discuss3" data-keywords="Zero,situation,rude,customers,reaction,quit,job,principles,respect,stand up">Check with AI</button>
+                    <div class="feedback" id="discuss3Feedback"></div>
+                </div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-redo"></i> Retell the Episode</h3>
+                <p class="instruction">Retell the main events of the episode in your own words. Use at least 5 idioms or expressions from the episode.</p>
+                <div class="question">
+                    <textarea class="text-input" id="retell" placeholder="Retell the episode here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="retell" data-keywords="get in a slump,snap out of it,light a fire under,pull a Gary Wheeler,extreme ownership,put your money where your mouth is,hands down">Check with AI</button>
+                    <div class="feedback" id="retellFeedback"></div>
+                </div>
+                <div class="example-answer" id="retellExample">
+                    <h4>Example Answer:</h4>
+                    <p>In this episode, the group arrives at the golf tournament location in an RV. Elena argues with Pryce about staying in the RV instead of a hotel, but Pryce convinces her to give it a try. Meanwhile, the dogs make a mess in the RV, angering Mitts. During the tournament, Santi gets in a slump after the first few holes, performing poorly. Pryce tries to light a fire under him by yelling, but this only makes things worse. Mitts gets stuck under a broken bed and has a conversation with Elena about boundaries. Pryce makes a bet with Chuck on Santi's game, putting even more pressure on Santi. Zero quits her job after standing up to rude customers. In the end, Santi snaps out of his slump and plays exceptionally well in the back nine, winning the bet and proving his talent.</p>
+                </div>
+                <div class="toggle-example" data-target="retellExample">
+                    Show Example <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-pen-fancy"></i> Alternative Ending</h3>
+                <p class="instruction">Write an alternative ending for the episode. What if Santi hadn't recovered from his slump? How would the story continue?</p>
+                <div class="question">
+                    <textarea class="text-input" id="alternative" placeholder="Write your alternative ending here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="alternative" data-keywords="Santi,slump,recover,alternative,ending,consequence,disappointment,Pryce,relationship,future">Check with AI</button>
+                    <div class="feedback" id="alternativeFeedback"></div>
+                </div>
+                <div class="example-answer" id="alternativeExample">
+                    <h4>Example Answer:</h4>
+                    <p>If Santi hadn't recovered from his slump, he would have continued to play poorly throughout the tournament. Pryce would have lost his bet with Chuck, creating financial strain and tension between them. Santi's confidence would have been shattered, potentially damaging his golf career. Elena might have blamed Pryce for putting too much pressure on her son, and their relationship could have deteriorated. Pryce might have questioned his coaching abilities and given up on mentoring Santi. The group would have left the tournament disappointed, with Santi feeling like a failure and Pryce facing the consequences of his impulsive bet. This could have led to a rift in the group and possibly ended their journey together.</p>
+                </div>
+                <div class="toggle-example" data-target="alternativeExample">
+                    Show Example <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="critical-thinking">
+            <h2><i class="fas fa-brain"></i> Critical Thinking</h2>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-user"></i> Character Analysis: Pryce</h3>
+                <p class="instruction">Analyze Pryce's character development in this episode. Consider his motivations, strengths, weaknesses, and how he changes throughout the episode.</p>
+                <div class="question">
+                    <textarea class="text-input" id="pryceAnalysis" placeholder="Write your analysis here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="pryceAnalysis" data-keywords="motivation,strengths,weaknesses,development,change,character,Pryce,coach,competitive,flawed,growth">Check with AI</button>
+                    <div class="feedback" id="pryceAnalysisFeedback"></div>
+                </div>
+                <div class="example-answer" id="pryceAnalysisExample">
+                    <h4>Example Answer:</h4>
+                    <p>Pryce is a complex character with both admirable qualities and significant flaws. His primary motivation is to help Santi succeed in golf, but he also has personal interests, as evidenced by his bet on the game. Pryce's strengths include his enthusiasm for golf, his belief in Santi's potential, and his ability to motivate others. However, his weaknesses are prominent in this episode: he's impulsive (making the bet), insensitive (yelling at Santi), and sometimes selfish (prioritizing his desires over others' comfort).</p>
+                    <p>Throughout the episode, Pryce shows some development. Initially, he insists on his plan without considering others' needs, but later he apologizes to Santi for his behavior, showing growth and self-awareness. His conversation with Mitts about the RV reveals his vulnerability and past struggles, adding depth to his character.</p>
+                    <p>Despite his flaws, Pryce genuinely cares about Santi's development and wants to see him succeed. His character represents the complexity of human nature - well-intentioned but imperfect, capable of both inspiring and disappointing those around him. By the end of the episode, Pryce begins to recognize his mistakes, suggesting potential for further growth in future episodes.</p>
+                </div>
+                <div class="toggle-example" data-target="pryceAnalysisExample">
+                    Show Example <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-balance-scale"></i> Ethical Dilemmas</h3>
+                <p class="instruction">Discuss the ethical aspects of Pryce betting on Santi's game. What responsibilities does a coach have toward their student? Is it ever appropriate for a coach to bet on their student's performance?</p>
+                <div class="question">
+                    <textarea class="text-input" id="ethical" placeholder="Write your thoughts here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="ethical" data-keywords="ethical,bet,coach,student,responsibility,trust,pressure,relationship,boundaries,professionalism,conflict of interest">Check with AI</button>
+                    <div class="feedback" id="ethicalFeedback"></div>
+                </div>
+                <div class="example-answer" id="ethicalExample">
+                    <h4>Example Answer:</h4>
+                    <p>Pryce's bet on Santi's game raises serious ethical concerns. A coach has several responsibilities toward their student: to provide guidance, support, and training; to prioritize the student's well-being and development; to maintain trust and open communication; and to avoid creating conflicts of interest.</p>
+                    <p>By betting on Santi's game, Pryce violates several of these responsibilities. First, he creates a conflict of interest - his personal financial gain is now tied to Santi's performance, which could influence his coaching decisions. Second, he adds unnecessary pressure on Santi, who is already struggling with his game. Third, he betrays trust by not informing Santi or Elena about the bet.</p>
+                    <p>It's generally inappropriate for a coach to bet on their student's performance, as it blurs professional boundaries and can compromise the coach-student relationship. Even if the coach believes in their student, betting introduces external pressures and potential conflicts that can harm the student's development and the trust between them.</p>
+                    <p>A coach's focus should be solely on the student's growth and well-being, not on personal gain. Pryce's bet demonstrates a lapse in ethical judgment that could have serious consequences for his relationship with Santi and his effectiveness as a coach.</p>
+                </div>
+                <div class="toggle-example" data-target="ethicalExample">
+                    Show Example <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-crystal-ball"></i> Predictions</h3>
+                <p class="instruction">Based on this episode, make predictions about what might happen in future episodes. Consider character development, plot progression, and potential conflicts.</p>
+                <div class="question">
+                    <textarea class="text-input" id="predictions" placeholder="Write your predictions here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="predictions" data-keywords="predictions,future,episodes,character,development,plot,conflict,Santi,golf,tournament,success,challenge,relationship,growth,obstacle">Check with AI</button>
+                    <div class="feedback" id="predictionsFeedback"></div>
+                </div>
+                <div class="example-answer" id="predictionsExample">
+                    <h4>Example Answer:</h4>
+                    <p>Based on this episode, I predict several developments for future episodes:</p>
+                    <p>First, Santi's golf career will likely continue to face challenges and triumphs. His ability to recover from his slump shows resilience, but he may struggle with consistency and pressure in future tournaments. His relationship with Pryce will be tested, especially if Santi learns about the bet.</p>
+                    <p>Second, Pryce's character will continue to evolve. His apology to Santi suggests self-awareness, but he may still struggle with his impulsive nature. Future episodes might explore his past and motivations more deeply, particularly his relationship with his ex-wife.</p>
+                    <p>Third, Zero may become more involved in the story. Her confidence and principles could make her a positive influence on Santi, possibly as a friend or romantic interest. Her decision to quit her job might lead to new opportunities and challenges.</p>
+                    <p>Fourth, the group dynamics in the RV will continue to develop. The cramped living space and differing personalities will likely create more conflicts, but also opportunities for growth and deeper connections between the characters.</p>
+                    <p>Finally, I predict that Santi will face a major tournament or opportunity that will test his skills and character. This could be a turning point in his golf career and his relationships with those around him.</p>
+                </div>
+                <div class="toggle-example" data-target="predictionsExample">
+                    Show Example <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-heart"></i> Personal Reflection</h3>
+                <p class="instruction">Reflect on the themes of pressure and resilience presented in this episode. How do these themes relate to your own life experiences? Have you ever faced a situation where you had to overcome pressure to perform well?</p>
+                <div class="question">
+                    <textarea class="text-input" id="reflection" placeholder="Write your reflection here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="reflection" data-keywords="reflection,pressure,resilience,themes,personal,experience,life,challenges,growth,overcome,perform,situation">Check with AI</button>
+                    <div class="feedback" id="reflectionFeedback"></div>
+                </div>
+                <div class="example-answer" id="reflectionExample">
+                    <h4>Example Answer:</h4>
+                    <p>This episode explores powerful themes of pressure and resilience that resonate with many life experiences. Santi's struggle with performance pressure during the tournament reflects a universal human experience - the challenge of performing well when stakes are high.</p>
+                    <p>In my own life, I've faced similar situations where pressure affected my performance. During my final exams in university, I felt overwhelmed by expectations and fear of failure. Like Santi, I initially struggled, getting "in my head" and performing poorly on my first few exams. The pressure affected my confidence and focus, making it even harder to succeed.</p>
+                    <p>However, I learned resilience through this experience. I developed strategies to manage pressure: breaking tasks into smaller steps, practicing mindfulness, and focusing on the process rather than the outcome. Like Santi eventually did in the tournament, I found a way to "snap out of" my slump and perform better on my remaining exams.</p>
+                    <p>The episode reminds us that pressure is a natural part of pursuing meaningful goals, but resilience is the key to overcoming it. Whether in sports, academics, or professional life, learning to manage pressure and bounce back from setbacks is an essential skill. Santi's journey shows that even when we struggle, we have the capacity to recover and succeed if we can find the right mindset and support.</p>
+                </div>
+                <div class="toggle-example" data-target="reflectionExample">
+                    Show Example <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="cultural-context">
+            <h2><i class="fas fa-globe-americas"></i> Cultural Context</h2>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-home"></i> RV Culture in America</h3>
+                <p class="instruction">Discuss the significance of RVs in American culture. What do they represent beyond just a mode of transportation? How are they portrayed in this episode?</p>
+                <div class="question">
+                    <textarea class="text-input" id="rvCulture" placeholder="Write your thoughts here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="rvCulture" data-keywords="RV,culture,America,significance,representation,transportation,freedom,adventure,lifestyle,portrayal,episode">Check with AI</button>
+                    <div class="feedback" id="rvCultureFeedback"></div>
+                </div>
+                <div class="example-answer" id="rvCultureExample">
+                    <h4>Example Answer:</h4>
+                    <p>RVs hold a special place in American culture, representing freedom, adventure, and a particular lifestyle. Beyond just a mode of transportation, RVs symbolize the American spirit of exploration and independence. They embody the idea of the open road and the ability to travel and live on one's own terms.</p>
+                    <p>In American culture, RVs are associated with road trips, camping, and family vacations. They represent a way to experience nature and travel while maintaining the comforts of home. For many, owning an RV is a symbol of success and the ability to enjoy leisure time.</p>
+                    <p>In this episode, the RV is portrayed as both a practical solution and a source of conflict. Pryce sees it as a way to save money and build camaraderie, emphasizing its practical benefits. However, Elena's resistance highlights the RV's limitations - it's cramped, lacks privacy, and doesn't offer the comforts of a hotel. This conflict reflects different values and priorities within the group.</p>
+                    <p>The episode also touches on the RV as a symbol of a particular lifestyle choice. Pryce's enthusiasm for the RV suggests he values adventure and simplicity, while Elena's preference for a hotel indicates she values comfort and privacy. This contrast reflects broader cultural differences in how people approach travel and living arrangements.</p>
+                </div>
+                <div class="toggle-example" data-target="rvCultureExample">
+                    Show Example <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-golf-ball"></i> Golf Etiquette and Culture</h3>
+                <p class="instruction">Analyze how golf etiquette and culture are portrayed in this episode. What do the interactions between characters reveal about golf as a social activity?</p>
+                <div class="question">
+                    <textarea class="text-input" id="golfEtiquette" placeholder="Write your analysis here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="golfEtiquette" data-keywords="golf,etiquette,culture,portrayed,episode,interactions,characters,social,activity,behavior,norms,expectations">Check with AI</button>
+                    <div class="feedback" id="golfEtiquetteFeedback"></div>
+                </div>
+                <div class="example-answer" id="golfEtiquetteExample">
+                    <h4>Example Answer:</h4>
+                    <p>This episode portrays various aspects of golf etiquette and culture through character interactions and tournament scenes. Golf is depicted not just as a sport but as a social activity with its own norms and expectations.</p>
+                    <p>The tournament scenes reveal the formal structure of golf culture, with organized start times, pairings, and announcements. The presence of a "shotgun start" and the emphasis on playing "timely" highlight the importance of punctuality and following established procedures in golf.</p>
+                    <p>The interactions between characters also reveal golf's social dimensions. Pryce's bet with Chuck shows how gambling is sometimes part of golf culture, adding excitement but also potential conflict. The rude golfers at the bar represent a negative aspect of golf culture - exclusivity and sometimes elitism, as they feel entitled to make inappropriate comments without consequence.</p>
+                    <p>Zero's reaction to the rude golfers contrasts with this, showing resistance to the toxic aspects of golf culture. Her refusal to tolerate disrespectful behavior challenges the idea that such behavior is acceptable in golf settings.</p>
+                    <p>The episode also touches on golf as a mentorship activity, with Pryce coaching Santi. This reflects golf's tradition of passing down knowledge and skills from one generation to the next. However, Pryce's approach shows how this mentorship can become problematic when the coach's ego and interests overshadow the student's development.</p>
+                </div>
+                <div class="toggle-example" data-target="golfEtiquetteExample">
+                    Show Example <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-language"></i> Cultural Connotations of Idioms</h3>
+                <p class="instruction">Analyze the cultural connotations of the idioms and expressions used in the episode. How do they reflect American values and communication styles?</p>
+                <div class="question">
+                    <textarea class="text-input" id="idiomCulture" placeholder="Write your analysis here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="idiomCulture" data-keywords="idioms,expressions,cultural,connotations,American,values,communication,styles,sports,metaphor,directness,action-oriented">Check with AI</button>
+                    <div class="feedback" id="idiomCultureFeedback"></div>
+                </div>
+                <div class="example-answer" id="idiomCultureExample">
+                    <h4>Example Answer:</h4>
+                    <p>The idioms and expressions used in this episode reflect several aspects of American cultural values and communication styles:</p>
+                    <p>First, sports metaphors are prominent, reflecting the importance of athletics in American culture. Expressions like "get in a slump," "snap out of it," and "light a fire under someone" use sports psychology terminology that has entered everyday language. This shows how sports serve as a common cultural reference point in American communication.</p>
+                    <p>Second, many idioms emphasize action and directness, such as "put your money where your mouth is" and "hands down." These reflect American cultural values of straightforwardness, backing up words with actions, and clear communication. The preference for direct expression over indirectness is a hallmark of American communication style.</p>
+                    <p>Third, the idiom "pull a Gary Wheeler" reflects the American tendency to create shorthand references to specific behaviors or situations, often named after people. This cultural practice allows for efficient communication among those who share the reference.</p>
+                    <p>Fourth, "extreme ownership" reflects American values of individualism and personal responsibility. This expression, popular in American business and self-help culture, emphasizes taking full responsibility for one's actions and outcomes, aligning with the American ideal of self-reliance.</p>
+                    <p>Finally, the casual and sometimes colorful language used by characters (including mild profanity) reflects the informal nature of American communication, particularly among peers. This informality contrasts with more formal communication styles in other cultures and highlights the American value of authenticity and straightforward expression.</p>
+                </div>
+                <div class="toggle-example" data-target="idiomCultureExample">
+                    Show Example <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-utensils"></i> Food and Socializing</h3>
+                <p class="instruction">Analyze the role of food and drinks in social interactions in this episode. What do the characters' choices and behaviors around food reveal about their personalities and relationships?</p>
+                <div class="question">
+                    <textarea class="text-input" id="foodSocializing" placeholder="Write your analysis here..."></textarea>
+                    <div class="word-count">0 words</div>
+                    <button class="btn btn-secondary check-ai" data-target="foodSocializing" data-keywords="food,drinks,social,interactions,episode,characters,choices,behaviors,personalities,relationships,reveal">Check with AI</button>
+                    <div class="feedback" id="foodSocializingFeedback"></div>
+                </div>
+                <div class="example-answer" id="foodSocializingExample">
+                    <h4>Example Answer:</h4>
+                    <p>Food and drinks play a subtle but significant role in social interactions throughout this episode, revealing aspects of characters' personalities and relationships.</p>
+                    <p>The opening scene offers drinks (Pepsi or beer) to the group, establishing a social atmosphere. This simple gesture reflects hospitality and the American custom of offering refreshments to guests. The characters' choices or lack of choice ("no takers") might indicate their mood or preferences.</p>
+                    <p>Elena's method of calming down involves "the beach. And drinking on it," revealing her coping mechanism and perhaps her relationship with alcohol. This contrasts with Pryce's method (music) and Santi's (unknown), showing different approaches to stress management.</p>
+                    <p>The bar scene where Zero works is central to the episode's conflict. The "birdie bellini" she prepares represents sophistication and creativity, contrasting with the crude behavior of the golfers. This juxtaposition highlights Zero's professionalism and the golfers' lack of refinement.</p>
+                    <p>The golfers' demand for drinks and their impatience ("Another minute?") reveal their sense of entitlement and disrespect for service workers. This behavior contrasts with Zero's professional approach, emphasizing the class and cultural differences between them.</p>
+                    <p>Food and drink choices also reflect practical concerns in the episode. The discussion about travel expenses including "snacks, magazines, and dinners with no appetizers" shows the characters' attention to budget and priorities. Elena's insistence that Pryce pay for expenses highlights financial boundaries in their relationship.</p>
+                    <p>Overall, food and drinks in the episode serve as social lubricants, status symbols, and sources of conflict, revealing character traits and relationship dynamics in subtle but meaningful ways.</p>
+                </div>
+                <div class="toggle-example" data-target="foodSocializingExample">
+                    Show Example <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="interactive">
+            <h2><i class="fas fa-gamepad"></i> Interactive Activities</h2>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-users"></i> Character Cards</h3>
+                <p class="instruction">Learn about the main characters in the episode.</p>
+                <div class="character-card">
+                    <div class="character-header">
+                        <div class="character-avatar">P</div>
+                        <div class="character-info">
+                            <h3>Pryce</h3>
+                            <p class="character-role">Golf Coach/Mentor</p>
+                        </div>
+                    </div>
+                    <p>Pryce is a passionate but flawed golf coach who believes in Santi's potential. He's enthusiastic and persuasive but sometimes acts impulsively without considering others' feelings. His bet on Santi's game shows his competitive nature and questionable judgment.</p>
+                    <div class="character-traits">
+                        <div class="trait">Enthusiastic</div>
+                        <div class="trait">Competitive</div>
+                        <div class="trait">Impulsive</div>
+                        <div class="trait">Persuasive</div>
+                        <div class="trait">Flawed</div>
+                    </div>
+                </div>
+                
+                <div class="character-card">
+                    <div class="character-header">
+                        <div class="character-avatar">S</div>
+                        <div class="character-info">
+                            <h3>Santi</h3>
+                            <p class="character-role">Talented Young Golfer</p>
+                        </div>
+                    </div>
+                    <p>Santi is a gifted golfer who struggles with pressure and self-doubt. He experiences a slump during the tournament but shows resilience by recovering in the back nine. He's sensitive to criticism but determined to succeed.</p>
+                    <div class="character-traits">
+                        <div class="trait">Talented</div>
+                        <div class="trait">Sensitive</div>
+                        <div class="trait">Resilient</div>
+                        <div class="trait">Determined</div>
+                        <div class="trait">Pressured</div>
+                    </div>
+                </div>
+                
+                <div class="character-card">
+                    <div class="character-header">
+                        <div class="character-avatar">E</div>
+                        <div class="character-info">
+                            <h3>Elena</h3>
+                            <p class="character-role">Santi's Mother</p>
+                        </div>
+                    </div>
+                    <p>Elena is a protective and practical mother who prioritizes her son's well-being. She's skeptical of Pryce's plans and prefers comfort and security. Her conversation with Mitts shows her ability to set boundaries and stand up for herself.</p>
+                    <div class="character-traits">
+                        <div class="trait">Protective</div>
+                        <div class="trait">Practical</div>
+                        <div class="trait">Assertive</div>
+                        <div class="trait">Cautious</div>
+                        <div class="trait">Boundary-setting</div>
+                    </div>
+                </div>
+                
+                <div class="character-card">
+                    <div class="character-header">
+                        <div class="character-avatar">M</div>
+                        <div class="character-info">
+                            <h3>Mitts</h3>
+                            <p class="character-role">Pryce's Friend</p>
+                        </div>
+                    </div>
+                    <p>Mitts is Pryce's loyal but cynical friend who often serves as the voice of reason. He's practical and no-nonsense, as shown by his frustration with the RV situation and the dogs. His conversation with Elena reveals his thoughtful side.</p>
+                    <div class="character-traits">
+                        <div class="trait">Loyal</div>
+                        <div class="trait">Cynical</div>
+                        <div class="trait">Practical</div>
+                        <div class="trait">No-nonsense</div>
+                        <div class="trait">Thoughtful</div>
+                    </div>
+                </div>
+                
+                <div class="character-card">
+                    <div class="character-header">
+                        <div class="character-avatar">Z</div>
+                        <div class="character-info">
+                            <h3>Zero</h3>
+                            <p class="character-role">Bartender</p>
+                        </div>
+                    </div>
+                    <p>Zero is a confident and principled bartender who refuses to tolerate disrespect. She stands up to rude customers and quits her job rather than compromise her values. She becomes a source of inspiration for Santi.</p>
+                    <div class="character-traits">
+                        <div class="trait">Confident</div>
+                        <div class="trait">Principled</div>
+                        <div class="trait">Assertive</div>
+                        <div class="trait">Courageous</div>
+                        <div class="trait">Inspiring</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-clock"></i> Timeline Activity</h3>
+                <p class="instruction">Drag and drop the events to arrange them in chronological order.</p>
+                <div class="timeline" id="timelineContainer">
+                    <div class="timeline-item" draggable="true" data-order="1">The group arrives at the golf tournament location</div>
+                    <div class="timeline-item" draggable="true" data-order="2">Elena argues with Pryce about staying in the RV vs. a hotel</div>
+                    <div class="timeline-item" draggable="true" data-order="3">The dogs make a mess in the RV's storage box</div>
+                    <div class="timeline-item" draggable="true" data-order="4">Mitts gets stuck under the broken bed</div>
+                    <div class="timeline-item" draggable="true" data-order="5">Pryce makes a bet with Chuck on Santi's game</div>
+                    <div class="timeline-item" draggable="true" data-order="6">Zero confronts rude customers at the bar</div>
+                    <div class="timeline-item" draggable="true" data-order="7">Santi struggles during the front nine of the tournament</div>
+                    <div class="timeline-item" draggable="true" data-order="8">Santi recovers and excels in the back nine</div>
+                </div>
+                <button class="btn btn-secondary" id="checkTimeline">Check Order</button>
+                <div class="feedback" id="timelineFeedback"></div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-random"></i> Character Motives Matching</h3>
+                <p class="instruction">Match each character with their primary motivation in the episode.</p>
+                <div class="matching-container">
+                    <div class="matching-column">
+                        <div class="matching-item" draggable="true" data-id="p1">Pryce</div>
+                        <div class="matching-item" draggable="true" data-id="s1">Santi</div>
+                        <div class="matching-item" draggable="true" data-id="e1">Elena</div>
+                        <div class="matching-item" draggable="true" data-id="m1">Mitts</div>
+                        <div class="matching-item" draggable="true" data-id="z1">Zero</div>
+                    </div>
+                    <div class="matching-column">
+                        <div class="drop-zone" data-id="p1">To prove his coaching ability and win money through Santi's success</div>
+                        <div class="drop-zone" data-id="s1">To overcome his slump and prove his talent as a golfer</div>
+                        <div class="drop-zone" data-id="e1">To ensure her son's well-being and comfort during the trip</div>
+                        <div class="drop-zone" data-id="m1">To support Pryce while maintaining his own comfort and boundaries</div>
+                        <div class="drop-zone" data-id="z1">To stand up for her principles and not tolerate disrespectful behavior</div>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" id="checkMotives">Check Answers</button>
+                <div class="feedback" id="motivesFeedback"></div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-question-circle"></i> Episode Quiz</h3>
+                <div class="quiz-question">
+                    <p>1. Why doesn't Elena want to stay in the RV?</p>
+                    <div class="quiz-options">
+                        <div class="option" data-answer="wrong">She's allergic to dogs</div>
+                        <div class="option" data-answer="correct">She prefers the comfort of a hotel</div>
+                        <div class="option" data-answer="wrong">She's afraid of traveling in an RV</div>
+                        <div class="option" data-answer="wrong">She doesn't like Pryce</div>
+                    </div>
+                </div>
+                <div class="quiz-question">
+                    <p>2. What problem do the dogs cause in the RV?</p>
+                    <div class="quiz-options">
+                        <div class="option" data-answer="correct">They make a mess in the storage box</div>
+                        <div class="option" data-answer="wrong">They escape and run away</div>
+                        <div class="option" data-answer="wrong">They bark all night</div>
+                        <div class="option" data-answer="wrong">They fight with each other</div>
+                    </div>
+                </div>
+                <div class="quiz-question">
+                    <p>3. Why does Pryce argue with Chuck?</p>
+                    <div class="quiz-options">
+                        <div class="option" data-answer="wrong">About golf techniques</div>
+                        <div class="option" data-answer="correct">About a bet on Santi's game</div>
+                        <div class="option" data-answer="wrong">About tournament rules</div>
+                        <div class="option" data-answer="wrong">About Zero's behavior</div>
+                    </div>
+                </div>
+                <div class="quiz-question">
+                    <p>4. What does Zero do after confronting the rude customers?</p>
+                    <div class="quiz-options">
+                        <div class="option" data-answer="wrong">She calls security</div>
+                        <div class="option" data-answer="correct">She quits her job</div>
+                        <div class="option" data-answer="wrong">She serves them anyway</div>
+                        <div class="option" data-answer="wrong">She asks them to leave</div>
+                    </div>
+                </div>
+                <div class="quiz-question">
+                    <p>5. How does Santi perform in the tournament?</p>
+                    <div class="quiz-options">
+                        <div class="option" data-answer="wrong">He plays poorly throughout</div>
+                        <div class="option" data-answer="wrong">He withdraws due to injury</div>
+                        <div class="option" data-answer="correct">He struggles at first but excels in the back nine</div>
+                        <div class="option" data-answer="wrong">He wins easily without any challenges</div>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" id="checkQuiz">Check Answers</button>
+                <div class="feedback" id="quizFeedback"></div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-brain"></i> Memory Game: Idioms</h3>
+                <p class="instruction">Match the idioms with their meanings by flipping the cards.</p>
+                <div class="memory-game" id="memoryGame">
+                    <div class="memory-card" data-idiom="get in a slump">
+                        <div class="memory-front">?</div>
+                        <div class="memory-back">get in a slump</div>
+                    </div>
+                    <div class="memory-card" data-idiom="get in a slump">
+                        <div class="memory-front">?</div>
+                        <div class="memory-back">To experience poor performance</div>
+                    </div>
+                    <div class="memory-card" data-idiom="snap out of it">
+                        <div class="memory-front">?</div>
+                        <div class="memory-back">snap out of it</div>
+                    </div>
+                    <div class="memory-card" data-idiom="snap out of it">
+                        <div class="memory-front">?</div>
+                        <div class="memory-back">To recover quickly</div>
+                    </div>
+                    <div class="memory-card" data-idiom="light a fire under">
+                        <div class="memory-front">?</div>
+                        <div class="memory-back">light a fire under</div>
+                    </div>
+                    <div class="memory-card" data-idiom="light a fire under">
+                        <div class="memory-front">?</div>
+                        <div class="memory-back">To motivate someone</div>
+                    </div>
+                    <div class="memory-card" data-idiom="extreme ownership">
+                        <div class="memory-front">?</div>
+                        <div class="memory-back">extreme ownership</div>
+                    </div>
+                    <div class="memory-card" data-idiom="extreme ownership">
+                        <div class="memory-front">?</div>
+                        <div class="memory-back">Taking full responsibility</div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button class="btn btn-secondary" id="resetMemory">Reset Game</button>
+                </div>
+            </div>
+            
+            <div class="exercise">
+                <h3 class="exercise-title"><i class="fas fa-layer-group"></i> Flashcards: Vocabulary</h3>
+                <p class="instruction">Click on the cards to flip them and learn the vocabulary.</p>
+                <div class="flashcard" id="vocabFlashcard1">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <h3>RV (Recreational Vehicle)</h3>
+                        </div>
+                        <div class="flashcard-back">
+                            <p>A motor vehicle or trailer equipped with some of the amenities of home. In the episode, the characters travel in an RV instead of staying at hotels.</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button class="btn btn-secondary" id="prevVocabCard"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="btn btn-secondary" id="nextVocabCard">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Created by English Language Learning Resources | © 2023</p>
+            <p>Interactive Workbook for "Stick" Episode 3</p>
+        </div>
+    </footer>
+    
+    <div class="notification" id="notification"></div>
+    
+    <div class="modal" id="submitModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Submit Your Work</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to submit your work? Once submitted, you won't be able to make changes.</p>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn btn-success" id="confirmSubmit">Submit</button>
+                    <button class="btn btn-secondary" id="cancelSubmit">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Global variables
+        let currentTab = 'vocabulary';
+        let progress = 0;
+        let completedSections = {};
+        let vocabFlashcardIndex = 0;
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let canFlip = true;
+        
+        // Vocabulary flashcards
+        const vocabFlashcards = [
+            {
+                front: "RV (Recreational Vehicle)",
+                back: "A motor vehicle or trailer equipped with some of the amenities of home. In the episode, the characters travel in an RV instead of staying at hotels."
+            },
+            {
+                front: "get in a slump",
+                back: "To experience a period of poor performance or bad luck, especially in sports or work."
+            },
+            {
+                front: "snap out of it",
+                back: "To quickly recover from a bad mood, depression, or unproductive state."
+            },
+            {
+                front: "light a fire under someone",
+                back: "To motivate someone to take action or work harder and more effectively."
+            },
+            {
+                front: "extreme ownership",
+                back: "Taking full responsibility for one's actions, decisions, and their consequences."
+            }
+        ];
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTabs();
+            initializeWordCount();
+            initializeMatching();
+            initializeDragAndDrop();
+            initializeFlashcards();
+            initializeMemoryGame();
+            initializeQuiz();
+            initializeSubmitButton();
+            initializeToggleExamples();
+            initializeAIChecking();
+        });
+        
+        // Tab navigation
+        function initializeTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        }
+        
+        function switchTab(tabId) {
+            // Update active tab
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+            
+            // Update active content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            currentTab = tabId;
+        }
+        
+        // Progress tracking
+        function updateProgress() {
+            const totalElements = document.querySelectorAll('.text-input, .option.selected').length;
+            const filledElements = document.querySelectorAll('.text-input[value!=""]:not([value=" "]), .option.selected').length;
+            
+            if (totalElements > 0) {
+                progress = Math.round((filledElements / totalElements) * 100);
+                const progressBar = document.getElementById('progressBar');
+                if (progressBar) {
+                    progressBar.style.width = `${progress}%`;
+                    progressBar.textContent = `${progress}%`;
+                    progressBar.style.backgroundColor = '#4CAF50';
+                }
+            }
+        }
+        
+        // Word count for text areas
+        function initializeWordCount() {
+            const textInputs = document.querySelectorAll('textarea');
+            textInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const wordCount = this.value.trim().split(/\s+/).filter(word => word.length > 0).length;
+                    const wordCountElement = this.parentNode.querySelector('.word-count');
+                    if (wordCountElement) {
+                        wordCountElement.textContent = `${wordCount} words`;
+                    }
+                    updateProgress();
+                });
+            });
+        }
+        
+        // Matching activity
+        function initializeMatching() {
+            // Check matching answers
+            const checkMatchingBtn = document.getElementById('checkMatching');
+            if (checkMatchingBtn) {
+                checkMatchingBtn.addEventListener('click', function() {
+                    const dropZones = document.querySelectorAll('#vocabulary .drop-zone');
+                    let correct = 0;
+                    let total = dropZones.length;
+                    dropZones.forEach(zone => {
+                        const zoneId = zone.getAttribute('data-id');
+                        const matchingItem = zone.querySelector('.matching-item');
+                        
+                        if (matchingItem && matchingItem.getAttribute('data-id') === zoneId) {
+                            zone.classList.add('filled');
+                            correct++;
+                        } else {
+                            zone.classList.remove('filled');
+                        }
+                    });
+                    const feedback = document.getElementById('matchingFeedback');
+                    if (feedback) {
+                        feedback.style.display = 'block';
+                        
+                        if (correct === total) {
+                            feedback.className = 'feedback success';
+                            feedback.textContent = `Excellent! You got all ${correct} matches correct.`;
+                            completedSections.matching = true;
+                        } else {
+                            feedback.className = 'feedback error';
+                            feedback.textContent = `You got ${correct} out of ${total} correct. Try again!`;
+                        }
+                    }
+                    
+                    updateProgress();
+                });
+            }
+            
+            // Check motives matching
+            const checkMotivesBtn = document.getElementById('checkMotives');
+            if (checkMotivesBtn) {
+                checkMotivesBtn.addEventListener('click', function() {
+                    const dropZones = document.querySelectorAll('#interactive .drop-zone');
+                    let correct = 0;
+                    let total = dropZones.length;
+                    dropZones.forEach(zone => {
+                        const zoneId = zone.getAttribute('data-id');
+                        const matchingItem = zone.querySelector('.matching-item');
+                        
+                        if (matchingItem && matchingItem.getAttribute('data-id') === zoneId) {
+                            zone.classList.add('filled');
+                            correct++;
+                        } else {
+                            zone.classList.remove('filled');
+                        }
+                    });
+                    const feedback = document.getElementById('motivesFeedback');
+                    if (feedback) {
+                        feedback.style.display = 'block';
+                        
+                        if (correct === total) {
+                            feedback.className = 'feedback success';
+                            feedback.textContent = `Excellent! You got all ${correct} matches correct.`;
+                            completedSections.motives = true;
+                        } else {
+                            feedback.className = 'feedback error';
+                            feedback.textContent = `You got ${correct} out of ${total} correct. Try again!`;
+                        }
+                    }
+                    
+                    updateProgress();
+                });
+            }
+            
+            // Check blanks
+            const checkBlanksBtn = document.getElementById('checkBlanks');
+            if (checkBlanksBtn) {
+                checkBlanksBtn.addEventListener('click', function() {
+                    const answers = {
+                        'blank1': 'snap out of it',
+                        'blank2': 'light a fire under',
+                        'blank3': 'get in a slump',
+                        'blank4': 'pull a Gary Wheeler',
+                        'blank5': 'extreme ownership'
+                    };
+                    let correct = 0;
+                    let total = Object.keys(answers).length;
+                    for (const [id, answer] of Object.entries(answers)) {
+                        const input = document.getElementById(id);
+                        if (input) {
+                            const userAnswer = input.value.trim().toLowerCase();
+                            
+                            if (userAnswer === answer.toLowerCase()) {
+                                input.style.borderColor = 'var(--success-color)';
+                                correct++;
+                            } else {
+                                input.style.borderColor = 'var(--error-color)';
+                            }
+                        }
+                    }
+                    const feedback = document.getElementById('blanksFeedback');
+                    if (feedback) {
+                        feedback.style.display = 'block';
+                        
+                        if (correct === total) {
+                            feedback.className = 'feedback success';
+                            feedback.textContent = `Excellent! You got all ${correct} answers correct.`;
+                            completedSections.blanks = true;
+                        } else {
+                            feedback.className = 'feedback error';
+                            feedback.textContent = `You got ${correct} out of ${total} correct. Try again!`;
+                        }
+                    }
+                    
+                    updateProgress();
+                });
+            }
+            
+            // Check phrasal verbs
+            const checkPhrasalBtn = document.getElementById('checkPhrasal');
+            if (checkPhrasalBtn) {
+                checkPhrasalBtn.addEventListener('click', function() {
+                    const answers = {
+                        'phrasal1': 'go sideways',
+                        'phrasal2': 'snap out of',
+                        'phrasal3': 'light a fire',
+                        'phrasal4': 'pull out',
+                        'phrasal5': 'came across'
+                    };
+                    let correct = 0;
+                    let total = Object.keys(answers).length;
+                    for (const [id, answer] of Object.entries(answers)) {
+                        const input = document.getElementById(id);
+                        if (input) {
+                            const userAnswer = input.value.trim().toLowerCase();
+                            
+                            if (userAnswer === answer.toLowerCase()) {
+                                input.style.borderColor = 'var(--success-color)';
+                                correct++;
+                            } else {
+                                input.style.borderColor = 'var(--error-color)';
+                            }
+                        }
+                    }
+                    const feedback = document.getElementById('phrasalFeedback');
+                    if (feedback) {
+                        feedback.style.display = 'block';
+                        
+                        if (correct === total) {
+                            feedback.className = 'feedback success';
+                            feedback.textContent = `Excellent! You got all ${correct} answers correct.`;
+                            completedSections.phrasal = true;
+                        } else {
+                            feedback.className = 'feedback error';
+                            feedback.textContent = `You got ${correct} out of ${total} correct. Try again!`;
+                        }
+                    }
+                    
+                    updateProgress();
+                });
+            }
+        }
+        
+        // Drag and drop functionality
+        function initializeDragAndDrop() {
+            // Timeline drag and drop
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const timelineContainer = document.getElementById('timelineContainer');
+            
+            if (timelineItems.length > 0 && timelineContainer) {
+                timelineItems.forEach(item => {
+                    item.addEventListener('dragstart', function(e) {
+                        this.classList.add('dragging');
+                        e.dataTransfer.setData('text/plain', this.getAttribute('data-order'));
+                    });
+                    
+                    item.addEventListener('dragend', function() {
+                        this.classList.remove('dragging');
+                    });
+                });
+                
+                timelineContainer.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    const draggingItem = document.querySelector('.dragging');
+                    if (draggingItem) {
+                        const siblings = [...timelineContainer.querySelectorAll('.timeline-item:not(.dragging)')];
+                        const nextSibling = siblings.find(sibling => {
+                            return e.clientY <= sibling.getBoundingClientRect().top + sibling.offsetHeight / 2;
+                        });
+                        timelineContainer.insertBefore(draggingItem, nextSibling);
+                    }
+                });
+            }
+            
+            // Check timeline order
+            const checkTimelineBtn = document.getElementById('checkTimeline');
+            if (checkTimelineBtn) {
+                checkTimelineBtn.addEventListener('click', function() {
+                    const timelineItems = document.querySelectorAll('.timeline-item');
+                    let correct = 0;
+                    let total = timelineItems.length;
+                    timelineItems.forEach((item, index) => {
+                        const expectedOrder = index + 1;
+                        const actualOrder = parseInt(item.getAttribute('data-order'));
+                        
+                        if (expectedOrder === actualOrder) {
+                            item.style.borderColor = 'var(--success-color)';
+                            correct++;
+                        } else {
+                            item.style.borderColor = 'var(--error-color)';
+                        }
+                    });
+                    const feedback = document.getElementById('timelineFeedback');
+                    if (feedback) {
+                        feedback.style.display = 'block';
+                        
+                        if (correct === total) {
+                            feedback.className = 'feedback success';
+                            feedback.textContent = `Excellent! You got all ${correct} events in the correct order.`;
+                            completedSections.timeline = true;
+                        } else {
+                            feedback.className = 'feedback error';
+                            feedback.textContent = `You got ${correct} out of ${total} events in the correct order. Try again!`;
+                        }
+                    }
+                    
+                    updateProgress();
+                });
+            }
+            
+            // Matching drag and drop
+            const matchingItems = document.querySelectorAll('.matching-item');
+            const dropZones = document.querySelectorAll('.drop-zone');
+            
+            if (matchingItems.length > 0 && dropZones.length > 0) {
+                matchingItems.forEach(item => {
+                    item.addEventListener('dragstart', function(e) {
+                        this.classList.add('dragging');
+                        e.dataTransfer.setData('text/plain', this.getAttribute('data-id'));
+                    });
+                    
+                    item.addEventListener('dragend', function() {
+                        this.classList.remove('dragging');
+                    });
+                });
+                
+                dropZones.forEach(zone => {
+                    zone.addEventListener('dragover', function(e) {
+                        e.preventDefault();
+                        this.classList.add('drag-over');
+                    });
+                    
+                    zone.addEventListener('dragleave', function() {
+                        this.classList.remove('drag-over');
+                    });
+                    
+                    zone.addEventListener('drop', function(e) {
+                        e.preventDefault();
+                        this.classList.remove('drag-over');
+                        
+                        const draggedItemId = e.dataTransfer.getData('text/plain');
+                        const draggedItem = document.querySelector(`.matching-item[data-id="${draggedItemId}"]`);
+                        
+                        // Remove any existing item in this drop zone
+                        const existingItem = this.querySelector('.matching-item');
+                        if (existingItem) {
+                            // Find the parent container to return the element
+                            const container = this.closest('.matching-container');
+                            if (container) {
+                                const column = container.querySelector('.matching-column');
+                                if (column) {
+                                    column.appendChild(existingItem);
+                                }
+                            }
+                        }
+                        
+                        // Add the dragged item to this drop zone
+                        if (draggedItem) {
+                            this.appendChild(draggedItem);
+                        }
+                    });
+                });
+            }
+        }
+        
+        // Multiple choice activities
+        function initializeQuiz() {
+            // Check conditionals
+            const checkConditionalsBtn = document.getElementById('checkConditionals');
+            if (checkConditionalsBtn) {
+                checkConditionalsBtn.addEventListener('click', function() {
+                    const questions = document.querySelectorAll('#grammar .question');
+                    let correct = 0;
+                    let total = questions.length;
+                    questions.forEach(question => {
+                        const selectedOption = question.querySelector('.option.selected');
+                        if (selectedOption && selectedOption.getAttribute('data-answer') === 'correct') {
+                            selectedOption.classList.add('correct');
+                            correct++;
+                        } else if (selectedOption) {
+                            selectedOption.classList.add('incorrect');
+                            // Show correct answer
+                            const correctOption = question.querySelector('.option[data-answer="correct"]');
+                            if (correctOption) {
+                                correctOption.classList.add('correct');
+                            }
+                        }
+                    });
+                    const feedback = document.getElementById('conditionalsFeedback');
+                    if (feedback) {
+                        feedback.style.display = 'block';
+                        
+                        if (correct === total) {
+                            feedback.className = 'feedback success';
+                            feedback.textContent = `Excellent! You got all ${correct} answers correct.`;
+                            completedSections.conditionals = true;
+                        } else {
+                            feedback.className = 'feedback error';
+                            feedback.textContent = `You got ${correct} out of ${total} correct. Try again!`;
+                        }
+                    }
+                    
+                    updateProgress();
+                });
+            }
+            
+            // Check episode quiz
+            const checkQuizBtn = document.getElementById('checkQuiz');
+            if (checkQuizBtn) {
+                checkQuizBtn.addEventListener('click', function() {
+                    const questions = document.querySelectorAll('#interactive .quiz-question');
+                    let correct = 0;
+                    let total = questions.length;
+                    questions.forEach(question => {
+                        const selectedOption = question.querySelector('.option.selected');
+                        if (selectedOption && selectedOption.getAttribute('data-answer') === 'correct') {
+                            selectedOption.classList.add('correct');
+                            correct++;
+                        } else if (selectedOption) {
+                            selectedOption.classList.add('incorrect');
+                            // Show correct answer
+                            const correctOption = question.querySelector('.option[data-answer="correct"]');
+                            if (correctOption) {
+                                correctOption.classList.add('correct');
+                            }
+                        }
+                    });
+                    const feedback = document.getElementById('quizFeedback');
+                    if (feedback) {
+                        feedback.style.display = 'block';
+                        
+                        if (correct === total) {
+                            feedback.className = 'feedback success';
+                            feedback.textContent = `Excellent! You got all ${correct} answers correct.`;
+                            completedSections.quiz = true;
+                        } else {
+                            feedback.className = 'feedback error';
+                            feedback.textContent = `You got ${correct} out of ${total} correct. Try again!`;
+                        }
+                    }
+                    
+                    updateProgress();
+                });
+            }
+            
+            // Add click event to options
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from siblings
+                    const siblings = this.parentNode.querySelectorAll('.option');
+                    siblings.forEach(sibling => {
+                        sibling.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    updateProgress();
+                });
+            });
+        }
+        
+        // Flashcards functionality
+        function initializeFlashcards() {
+            // Vocabulary flashcards
+            const vocabFlashcard = document.getElementById('vocabFlashcard');
+            if (vocabFlashcard) {
+                vocabFlashcard.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+            }
+            
+            const prevFlashcardBtn = document.getElementById('prevFlashcard');
+            if (prevFlashcardBtn) {
+                prevFlashcardBtn.addEventListener('click', function() {
+                    vocabFlashcardIndex = (vocabFlashcardIndex - 1 + vocabFlashcards.length) % vocabFlashcards.length;
+                    updateVocabFlashcard();
+                });
+            }
+            
+            const nextFlashcardBtn = document.getElementById('nextFlashcard');
+            if (nextFlashcardBtn) {
+                nextFlashcardBtn.addEventListener('click', function() {
+                    vocabFlashcardIndex = (vocabFlashcardIndex + 1) % vocabFlashcards.length;
+                    updateVocabFlashcard();
+                });
+            }
+            
+            // Interactive section flashcards
+            const interactiveFlashcard = document.getElementById('vocabFlashcard1');
+            if (interactiveFlashcard) {
+                interactiveFlashcard.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+            }
+            
+            const prevVocabCardBtn = document.getElementById('prevVocabCard');
+            if (prevVocabCardBtn) {
+                prevVocabCardBtn.addEventListener('click', function() {
+                    vocabFlashcardIndex = (vocabFlashcardIndex - 1 + vocabFlashcards.length) % vocabFlashcards.length;
+                    updateInteractiveFlashcard();
+                });
+            }
+            
+            const nextVocabCardBtn = document.getElementById('nextVocabCard');
+            if (nextVocabCardBtn) {
+                nextVocabCardBtn.addEventListener('click', function() {
+                    vocabFlashcardIndex = (vocabFlashcardIndex + 1) % vocabFlashcards.length;
+                    updateInteractiveFlashcard();
+                });
+            }
+        }
+        
+        function updateVocabFlashcard() {
+            const flashcard = document.getElementById('vocabFlashcard');
+            if (flashcard) {
+                const front = flashcard.querySelector('.flashcard-front h3');
+                const back = flashcard.querySelector('.flashcard-back p');
+                
+                if (front && back) {
+                    front.textContent = vocabFlashcards[vocabFlashcardIndex].front;
+                    back.textContent = vocabFlashcards[vocabFlashcardIndex].back;
+                    
+                    flashcard.classList.remove('flipped');
+                }
+            }
+        }
+        
+        function updateInteractiveFlashcard() {
+            const flashcard = document.getElementById('vocabFlashcard1');
+            if (flashcard) {
+                const front = flashcard.querySelector('.flashcard-front h3');
+                const back = flashcard.querySelector('.flashcard-back p');
+                
+                if (front && back) {
+                    front.textContent = vocabFlashcards[vocabFlashcardIndex].front;
+                    back.textContent = vocabFlashcards[vocabFlashcardIndex].back;
+                    
+                    flashcard.classList.remove('flipped');
+                }
+            }
+        }
+        
+        // Memory game functionality
+        function initializeMemoryGame() {
+            memoryCards = document.querySelectorAll('.memory-card');
+            
+            memoryCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    if (!canFlip || this.classList.contains('flip') || this.classList.contains('matched')) {
+                        return;
+                    }
+                    
+                    this.classList.add('flip');
+                    flippedCards.push(this);
+                    
+                    if (flippedCards.length === 2) {
+                        canFlip = false;
+                        checkMatch();
+                    }
+                });
+            });
+            
+            const resetMemoryBtn = document.getElementById('resetMemory');
+            if (resetMemoryBtn) {
+                resetMemoryBtn.addEventListener('click', function() {
+                    resetMemoryGame();
+                });
+            }
+        }
+        
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            const match = card1.getAttribute('data-idiom') === card2.getAttribute('data-idiom');
+            
+            if (match) {
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                matchedPairs++;
+                
+                if (matchedPairs === memoryCards.length / 2) {
+                    showNotification('Congratulations! You matched all pairs!', 'success');
+                    completedSections.memory = true;
+                    updateProgress();
+                }
+            } else {
+                setTimeout(() => {
+                    card1.classList.remove('flip');
+                    card2.classList.remove('flip');
+                }, 1000);
+            }
+            
+            setTimeout(() => {
+                flippedCards = [];
+                canFlip = true;
+            }, 1000);
+        }
+        
+        function resetMemoryGame() {
+            memoryCards.forEach(card => {
+                card.classList.remove('flip', 'matched');
+            });
+            flippedCards = [];
+            matchedPairs = 0;
+            canFlip = true;
+        }
+        
+        // Toggle example answers
+        function initializeToggleExamples() {
+            document.querySelectorAll('.toggle-example').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const target = document.getElementById(targetId);
+                    const icon = this.querySelector('i');
+                    
+                    if (target && icon) {
+                        if (target.classList.contains('show')) {
+                            target.classList.remove('show');
+                            icon.className = 'fas fa-chevron-down';
+                            this.innerHTML = 'Show Example <i class="fas fa-chevron-down"></i>';
+                        } else {
+                            target.classList.add('show');
+                            icon.className = 'fas fa-chevron-up';
+                            this.innerHTML = 'Hide Example <i class="fas fa-chevron-up"></i>';
+                        }
+                    }
+                });
+            });
+        }
+        
+        // AI-like checking for open-ended questions
+        function initializeAIChecking() {
+            document.querySelectorAll('.check-ai').forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetIds = this.getAttribute('data-target').split(',');
+                    const keywords = this.getAttribute('data-keywords').split(',');
+                    let allFilled = true;
+                    let hasKeywords = false;
+                    
+                    targetIds.forEach(targetId => {
+                        const target = document.getElementById(targetId);
+                        if (!target || !target.value.trim()) {
+                            allFilled = false;
+                        } else {
+                            const text = target.value.toLowerCase();
+                            const foundKeywords = keywords.filter(keyword => text.includes(keyword));
+                            
+                            if (foundKeywords.length >= keywords.length * 0.3) { // At least 30% of keywords found
+                                hasKeywords = true;
+                            }
+                        }
+                    });
+                    
+                    const feedbackId = targetIds[0] + 'Feedback';
+                    const feedback = document.getElementById(feedbackId);
+                    
+                    if (feedback) {
+                        feedback.style.display = 'block';
+                        
+                        if (!allFilled) {
+                            feedback.className = 'feedback error';
+                            feedback.textContent = 'Please fill in all fields before checking.';
+                        } else if (hasKeywords) {
+                            feedback.className = 'feedback success';
+                            feedback.textContent = 'Good job! Your answer includes relevant vocabulary and ideas.';
+                            completedSections[targetIds[0]] = true;
+                            updateProgress();
+                        } else {
+                            feedback.className = 'feedback error';
+                            feedback.textContent = 'Your answer could be improved. Try to include more relevant vocabulary and ideas from the episode.';
+                        }
+                    }
+                });
+            });
+        }
+        
+        // Submit functionality
+        function initializeSubmitButton() {
+            const submitButton = document.createElement('button');
+            submitButton.className = 'btn btn-success';
+            submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Workbook';
+            submitButton.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 100;
+                padding: 12px 24px;
+                font-size: 16px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            document.body.appendChild(submitButton);
+            
+            submitButton.addEventListener('click', function() {
+                document.getElementById('submitModal').classList.add('active');
+            });
+            
+            const closeModalBtn = document.getElementById('closeModal');
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', function() {
+                    document.getElementById('submitModal').classList.remove('active');
+                });
+            }
+            
+            const cancelSubmitBtn = document.getElementById('cancelSubmit');
+            if (cancelSubmitBtn) {
+                cancelSubmitBtn.addEventListener('click', function() {
+                    document.getElementById('submitModal').classList.remove('active');
+                });
+            }
+            
+            const confirmSubmitBtn = document.getElementById('confirmSubmit');
+            if (confirmSubmitBtn) {
+                confirmSubmitBtn.addEventListener('click', function() {
+                    // In a real application, this would send the data to a server
+                    showNotification('Workbook submitted successfully!', 'success');
+                    document.getElementById('submitModal').classList.remove('active');
+                    
+                    // Create a summary of the work
+                    let summary = 'Stick Episode 3 Workbook Submission\n\n';
+                    summary += `Progress: ${progress}%\n\n`;
+                    
+                    // Add vocabulary section
+                    summary += 'Vocabulary Section:\n';
+                    if (completedSections.matching) summary += '- Matching: Completed\n';
+                    if (completedSections.blanks) summary += '- Fill in the Blanks: Completed\n';
+                    
+                    // Add grammar section
+                    summary += '\nGrammar Section:\n';
+                    if (completedSections.conditionals) summary += '- Conditionals: Completed\n';
+                    if (completedSections.phrasal) summary += '- Phrasal Verbs: Completed\n';
+                    
+                    // Add interactive section
+                    summary += '\nInteractive Activities:\n';
+                    if (completedSections.timeline) summary += '- Timeline: Completed\n';
+                    if (completedSections.motives) summary += '- Character Motives: Completed\n';
+                    if (completedSections.quiz) summary += '- Episode Quiz: Completed\n';
+                    if (completedSections.memory) summary += '- Memory Game: Completed\n';
+                    
+                    // In a real application, this would be sent via email
+                    console.log(summary);
+                });
+            }
+        }
+        
+        // Notification system
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            if (notification) {
+                notification.textContent = message;
+                notification.className = `notification ${type}`;
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
